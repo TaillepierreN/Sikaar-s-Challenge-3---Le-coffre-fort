@@ -10,6 +10,9 @@ public class WheelBehavior : MonoBehaviour
     [SerializeField] TMP_Text rotationCounter;
     [SerializeField] Material greenMat;
     [SerializeField] Renderer voyant1, voyant2, voyant3, voyant4;
+    Vector3 firstpos, center, newpos;
+    GameObject hand;
+    bool intrigger;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +53,27 @@ public class WheelBehavior : MonoBehaviour
             }
         }
         prevRotation = intRotation;
-    }
+        if(intrigger)
+        {
+            newpos = hand.transform.position;
+            var angle=Vector3.Angle(firstpos-center, newpos-center);
+            Debug.Log(angle);
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+            firstpos = newpos;
 
+        }
+
+
+    }
+    private void OnTriggerEnter(Collider other) {
+         firstpos = other.transform.position;
+         center = gameObject.transform.position;
+         hand = other.gameObject;
+    }
+    private void OnTriggerStay(Collider other) {
+        intrigger = true;
+    }
+    private void OnTriggerExit(Collider other) {
+        intrigger = false;
+    }
 }
