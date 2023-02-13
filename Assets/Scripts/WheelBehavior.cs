@@ -6,11 +6,13 @@ using TMPro;
 public class WheelBehavior : MonoBehaviour
 {
     int intRotation, prevRotation;
-    bool chevron1, chevron2, chevron3, chevron4;
+    [SerializeField]bool chevron1, chevron2, chevron3, chevron4;
     [SerializeField] TMP_Text rotationCounter;
     [SerializeField] Material greenMat;
     [SerializeField] Renderer voyant1, voyant2, voyant3, voyant4;
+    [SerializeField] HingeJoint door;
     Vector3 firstpos, center, newpos;
+
     GameObject hand;
     bool intrigger;
     // Start is called before the first frame update
@@ -49,9 +51,13 @@ public class WheelBehavior : MonoBehaviour
                 chevron4 = true;
                 voyant4.material = greenMat;
                 //call door open here
-                
+                JointLimits limits = door.limits;
+                limits.max = 90f;
+                door.limits = limits;
+                door.useMotor = true;
             }
         }
+        
         prevRotation = intRotation;
         if(intrigger)
         {
